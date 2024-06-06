@@ -49,5 +49,8 @@
     <None Include="..\..\Beijing\Beijing_Edgelist.csv">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Delhi_Edgelist.csv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

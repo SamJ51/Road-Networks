@@ -21,11 +21,11 @@ struct Graph* createGraph(int V) {
 
 void addEdge(struct Graph* graph, int src, int dest, double length) {
 	if (src >= graph->V || dest >= graph->V || src < 0 || dest < 0) {
-		printf("Error: src or dest out of bounds\n");
+	    //printf("Error: src or dest out of bounds\n");
 		return;
 	}
 
-	printf("Array is inside of bounds!\n");
+	//printf("Array is inside of bounds!\n");
 
 	struct AdjListNode* newNode = newAdjListNode(dest, length);
 	if (newNode == NULL) return; // Allocation failed
@@ -44,9 +44,10 @@ void printGraph(struct Graph* graph) {
 		struct AdjListNode* pCrawl = graph->array[v].head;
 		printf("\n Adjacency list of vertex %d\n head ", v);
 		while (pCrawl) {
-			printf("-> %d", pCrawl->dest);
+			printf("-> %d (length: %lf) ", pCrawl->dest, pCrawl->length);
 			pCrawl = pCrawl->next;
 		}
 		printf("\n");
 	}
 }
+

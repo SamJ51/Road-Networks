@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Beijing\Beijing_Edgelist.csv" />
+    <None Include="Delhi_Edgelist.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "adj.h"
 
 struct Graph {
 	int V;					// Number of Vertices

@@ -4,4 +4,4 @@
 #include <stdlib.h>
 #include "graph.h"
 
-int dijkstra(struct Graph* graph, int src);
+void dijkstra(struct Graph* graph, int src);

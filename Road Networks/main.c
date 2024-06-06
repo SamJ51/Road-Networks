@@ -1,11 +1,12 @@
+#include "graph.h"
 #include "readCSV.h"
+#include "dijkstra.h"
 
 int main() {
-	const char* filename = "Beijing_Edgelist.csv";
+	const char* filename = "Delhi_Edgelist.csv";
 	int maxNodeIndex = findMaxNodeIndex(filename);
 
 	if (maxNodeIndex != -1) {
-		printf("\n\n%d\n\n", maxNodeIndex);
 		int vertexCount = countUniqueVertices(filename, maxNodeIndex);
 
 		if (vertexCount != -1) {
@@ -13,7 +14,8 @@ int main() {
 
 			struct Graph* graph = createGraph(vertexCount);
 			readCSVAndPopulateGraph(filename, graph);
-			printGraph(graph);
+		    //printGraph(graph);
+			dijkstra(graph, 16);
 		}
 	}
 
