@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="adj.c" />
+    <ClCompile Include="dijkstra.c" />
     <ClCompile Include="graph.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="readCSV.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adj.h" />
+    <ClInclude Include="dijkstra.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="readCSV.h" />
   </ItemGroup>
