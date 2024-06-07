@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #pragma once
 
 #include <stdio.h>

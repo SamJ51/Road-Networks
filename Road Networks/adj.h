@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #pragma once
 
 #include <stdio.h>
@@ -13,4 +15,4 @@ struct AdjList {
 	struct AdjListNode* head;	// Pointer to the head of a list
 };
 
-struct AdjListNode* newAdjListNode(int dest, double length);	// Function to create a new adjacency list node
+struct AdjListNode* newAdjListNode(int dest, double length);

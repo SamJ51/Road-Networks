@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #pragma once
 
 #include <stdio.h>
@@ -11,8 +13,8 @@ struct Graph {
 	double* yCoord;			// Y coordinates
 };
 
-struct Graph* createGraph(int V);											// Function to create a graph with V vertices
-void addEdge(struct Graph* graph, int src, int dest, double length);		// Function to add an edge to an undirected graph
-void printGraph(struct Graph* graph);										// Function to print the adjacency list of the graph
+struct Graph* createGraph(int V);
+void addEdge(struct Graph* graph, int src, int dest, double length);
+void printGraph(struct Graph* graph);
 
 

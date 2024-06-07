@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #include "readCSV.h"
 
 void readCSVAndPopulateGraph(const char* filename, struct Graph* graph) {
@@ -9,19 +11,18 @@ void readCSVAndPopulateGraph(const char* filename, struct Graph* graph) {
 
 	char line[1024];
 	while (fgets(line, sizeof(line), file)) {
-		if (line[0] != 'X') { // Skip header line
+		if (line[0] != 'X') { 
 			int startNode, endNode, edge;
 			double xCoord, yCoord, length;
 
 			sscanf_s(line, "%lf,%lf,%d,%d,%d,%lf", &xCoord, &yCoord, &startNode, &endNode, &edge, &length);
 
-			// Adjust node indices for 0-based indexing
 			startNode--;
 			endNode--;
 
 			if (startNode >= 0 && startNode < graph->V && endNode >= 0 && endNode < graph->V) {
 				addEdge(graph, startNode, endNode, length);
-				// Store coordinates
+				
 				graph->xCoord[startNode] = xCoord;
 				graph->yCoord[startNode] = yCoord;
 				graph->xCoord[endNode] = xCoord;
@@ -54,7 +55,7 @@ int countUniqueVertices(const char* filename, int maxNodeIndex) {
 	char line[1024];
 
 	while (fgets(line, sizeof(line), file)) {
-		if (line[0] != 'X') { // Skip header line
+		if (line[0] != 'X') {
 			int startNode, endNode, edge;
 			double xCoord, yCoord, length;
 
@@ -89,7 +90,7 @@ int findMaxNodeIndex(const char* filename) {
 	char line[1024];
 
 	while (fgets(line, sizeof(line), file)) {
-		if (line[0] != 'X') { // Skip header line
+		if (line[0] != 'X') {
 			int startNode, endNode, edge;
 			double xCoord, yCoord, length;
 

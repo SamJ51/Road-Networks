@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #include "dijkstra.h"
 #include <limits.h>
 #include <stdbool.h>

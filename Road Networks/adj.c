@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #include "adj.h"
 
 struct AdjListNode* newAdjListNode(int dest, double length) {

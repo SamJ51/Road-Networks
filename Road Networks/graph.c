@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #include "graph.h"
 #include "adj.h"
 
@@ -9,7 +11,6 @@ struct Graph* createGraph(int V) {
 	}
 	graph->V = V;
 
-	// Create an array of adjacency lists. Size of array will be V
 	graph->array = (struct AdjList*)malloc(V * sizeof(struct AdjList));
 	if (graph->array == NULL) {
 		fprintf(stderr, "Memory allocation failed\n");
@@ -17,7 +18,6 @@ struct Graph* createGraph(int V) {
 		return NULL;
 	}
 
-	// Initialise each adjacency list as empty by making head as NULL
 	for (int i = 0; i < V; ++i)
 		graph->array[i].head = NULL;
 
@@ -42,12 +42,12 @@ void addEdge(struct Graph* graph, int src, int dest, double length) {
 	//printf("Array is inside of bounds!\n");
 
 	struct AdjListNode* newNode = newAdjListNode(dest, length);
-	if (newNode == NULL) return; // Allocation failed
+	if (newNode == NULL) return;
 	newNode->next = graph->array[src].head;
 	graph->array[src].head = newNode;
 
 	newNode = newAdjListNode(src, length);
-	if (newNode == NULL) return; // Allocation failed
+	if (newNode == NULL) return;
 	newNode->next = graph->array[dest].head;
 	graph->array[dest].head = newNode;
 

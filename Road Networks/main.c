@@ -1,3 +1,5 @@
+// Code is either created by me or GPT4 omni
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -25,7 +27,7 @@ size_t getMemoryUsage() {
 }
 
 int main() {
-    const char* filename = "Delhi_Edgelist.csv";
+    const char* filename = "Beijing_Edgelist.csv";
     int maxNodeIndex = findMaxNodeIndex(filename);
 
     if (maxNodeIndex != -1) {
@@ -38,8 +40,8 @@ int main() {
             readCSVAndPopulateGraph(filename, graph);
             //printGraph(graph);
 
-            int sourceVertex = 100; // Change source vertex as needed
-            int goalVertex = vertexCount - 1; // Change goal vertex as needed
+            int sourceVertex = 100;              // Change source vertex as needed
+            int goalVertex = vertexCount - 1;    // Change goal vertex as needed
 
             // Timing and memory usage for Dijkstra's algorithm
             printf("\nRunning Dijkstra's algorithm:\n");
