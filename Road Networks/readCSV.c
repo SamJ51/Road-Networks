@@ -18,6 +18,12 @@ void readCSVAndPopulateGraph(const char* filename, struct Graph* graph) {
 
 			// Adjust node indices for 0-based indexing
 			addEdge(graph, startNode - 1, endNode - 1, length);
+
+			graph->xCoord[startNode] = xCoord;
+			graph->yCoord[startNode] = yCoord;
+			graph->xCoord[endNode] = xCoord;
+			graph->yCoord[endNode] = yCoord;
+
 			count++;
 		}
 	}

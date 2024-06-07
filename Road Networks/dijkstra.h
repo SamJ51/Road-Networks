@@ -5,3 +5,4 @@
 #include "graph.h"
 
 void dijkstra(struct Graph* graph, int src);
+void astar(struct Graph* graph, int src, int goal);

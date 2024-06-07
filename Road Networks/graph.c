@@ -11,10 +11,18 @@ struct Graph* createGraph(int V) {
 
 	// Create an array of adjacency lists. Size of array will be V
 	graph->array = (struct AdjList*)malloc(V * sizeof(struct AdjList));
+	if (graph->array == NULL) {
+		fprintf(stderr, "Memory allocation failed\n");
+		free(graph);
+		return NULL;
+	}
 
 	// Initialise each adjacency list as empty by making head as NULL
 	for (int i = 0; i < V; ++i)
 		graph->array[i].head = NULL;
+
+	graph->xCoord = (double*)malloc(V * sizeof(double));
+	graph->yCoord = (double*)malloc(V * sizeof(double));
 
 	return graph;
 }

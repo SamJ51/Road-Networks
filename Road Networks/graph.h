@@ -7,6 +7,8 @@
 struct Graph {
 	int V;					// Number of Vertices
 	struct AdjList* array;	// Array of adjacency lists
+	double* xCoord;			// X coordinates
+	double* yCoord;			// Y coordinates
 };
 
 struct Graph* createGraph(int V);											// Function to create a graph with V vertices

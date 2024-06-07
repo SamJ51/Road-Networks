@@ -163,3 +163,6 @@ void dijkstra(struct Graph* graph, int src) {
 	free(minHeap->array);
 	free(minHeap);
 }
+
+void astar(struct Graph* graph, int src, int goal) {
+}
