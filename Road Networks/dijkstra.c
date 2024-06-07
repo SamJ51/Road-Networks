@@ -1,10 +1,12 @@
 #include "dijkstra.h"
 #include <limits.h>
 #include <stdbool.h>
+#include <math.h>
 
 struct MinHeapNode {
 	int v;
-	double dist;
+	double g; // Cost from start to the node
+	double f; // Estimated cst (g + heuristic)
 };
 
 struct MinHeap {
@@ -14,10 +16,11 @@ struct MinHeap {
 	struct MinHeapNode** array;
 };
 
-struct MinHeapNode* newMinHeapNode(int v, double dist) {
+struct MinHeapNode* newMinHeapNode(int v, double g, double f) {
 	struct MinHeapNode* minHeapNode = (struct MinHeapNode*)malloc(sizeof(struct MinHeapNode));
 	minHeapNode->v = v;
-	minHeapNode->dist = dist;
+	minHeapNode->g = g;
+	minHeapNode->f = f;
 	return minHeapNode;
 }
 
@@ -26,7 +29,7 @@ struct MinHeap* createMinHeap(int capacity) {
 	minHeap->pos = (int*)malloc(capacity * sizeof(int));
 	minHeap->size = 0;
 	minHeap->capacity = capacity;
-	minHeap->array = (struct MinHeapNode**)malloc(capacity * sizeof(struct MinHeap));
+	minHeap->array = (struct MinHeapNode**)malloc(capacity * sizeof(struct MinHeapNode*));
 
 	for (int i = 0; i < capacity; ++i) {
 		minHeap->array[i] = NULL;
@@ -47,11 +50,11 @@ void minHeapify(struct MinHeap* minHeap, int idx) {
 	left = 2 * idx + 1;
 	right = 2 * idx + 2;
 
-	if (left < minHeap->size && minHeap->array[left]->dist < minHeap->array[smallest]->dist) {
+	if (left < minHeap->size && minHeap->array[left]->f < minHeap->array[smallest]->f) {
 		smallest = left;
 	}
 
-	if (right < minHeap->size && minHeap->array[right]->dist < minHeap->array[smallest]->dist) {
+	if (right < minHeap->size && minHeap->array[right]->f < minHeap->array[smallest]->f) {
 		smallest = right;
 	}
 
@@ -91,12 +94,13 @@ struct MinHeapNode* extractMin(struct MinHeap* minHeap) {
 	return root;
 }
 
-void decreaseKey(struct MinHeap* minHeap, int v, double dist) {
+void decreaseKey(struct MinHeap* minHeap, int v, double g, double f) {
 	int i = minHeap->pos[v];
 
-	minHeap->array[i]->dist = dist;
+	minHeap->array[i]->g = g;
+	minHeap->array[i]->f = f;
 
-	while (i && minHeap->array[i]->dist < minHeap->array[(i - 1) / 2]->dist) {
+	while (i && minHeap->array[i]->f < minHeap->array[(i - 1) / 2]->f) {
 		minHeap->pos[minHeap->array[i]->v] = (i - 1) / 2;
 		minHeap->pos[minHeap->array[(i - 1) / 2]->v] = i;
 		swapMinHeapNode(&minHeap->array[i], &minHeap->array[(i - 1) / 2]);
@@ -112,6 +116,12 @@ int isInMinHeap(struct MinHeap* minHeap, int v) {
 	return 0;
 }
 
+double heuristic(struct Graph* graph, int src, int dest) {
+	double dx = graph->xCoord[dest] - graph->xCoord[src];
+	double dy = graph->yCoord[dest] - graph->yCoord[src];
+	return sqrt(dx * dx + dy * dy);
+}
+
 void printArr(double dist[], int n) {
 	printf("Vertex\tDistance from Source\n");
 	for (int i = 0; i < n; ++i) {
@@ -119,6 +129,62 @@ void printArr(double dist[], int n) {
 			printf("%d\t\t%f\n", i, dist[i]);
 		}
 	}
+}
+
+void astar(struct Graph* graph, int src, int goal) {
+	int V = graph->V;
+	double* g = (double*)malloc(V * sizeof(double));
+	double* f = (double*)malloc(V * sizeof(double));
+
+	struct MinHeap* minHeap = createMinHeap(V);
+
+	for (int v = 0; v < V; ++v) {
+		g[v] = INT_MAX;
+		f[v] = INT_MAX;
+		minHeap->array[v] = newMinHeapNode(v, g[v], f[v]);
+		minHeap->pos[v] = v;
+	}
+
+	g[src] = 0.0;
+	f[src] = heuristic(graph, src, goal);
+	decreaseKey(minHeap, src, g[src], f[src]);
+
+	minHeap->size = V;
+
+	while (!isEmpty(minHeap)) {
+		struct MinHeapNode* minHeapNode = extractMin(minHeap);
+		int u = minHeapNode->v;
+
+		if (u == goal) {
+			printf("Goal reached\n");
+			break;
+		}
+
+		struct AdjListNode* pCrawl = graph->array[u].head;
+		while (pCrawl != NULL) {
+			int v = pCrawl->dest;
+
+			if (isInMinHeap(minHeap, v)) {
+				double tentative_g = g[u] + pCrawl->length;
+
+				if (tentative_g < g[v]) {
+					g[v] = tentative_g;
+					f[v] = g[v] + heuristic(graph, v, goal);
+					decreaseKey(minHeap, v, g[v], f[v]);
+				}
+			}
+			pCrawl = pCrawl->next;
+		}
+	}
+
+	printf("Final distances using A*:\n");
+	printArr(g, V);
+
+	free(g);
+	free(f);
+	free(minHeap->pos);
+	free(minHeap->array);
+	free(minHeap);
 }
 
 void dijkstra(struct Graph* graph, int src) {
@@ -129,14 +195,14 @@ void dijkstra(struct Graph* graph, int src) {
 
 	for (int v = 0; v < V; ++v) {
 		dist[v] = INT_MAX;
-		minHeap->array[v] = newMinHeapNode(v, dist[v]);
+		minHeap->array[v] = newMinHeapNode(v, dist[v], dist[v]);
 		minHeap->pos[v] = v;
 	}
 
-	minHeap->array[src] = newMinHeapNode(src, dist[src]);
+	minHeap->array[src] = newMinHeapNode(src, dist[src], dist[src]);
 	minHeap->pos[src] = src;
 	dist[src] = 0;
-	decreaseKey(minHeap, src, dist[src]);
+	decreaseKey(minHeap, src, dist[src], dist[src]);
 
 	minHeap->size = V;
 
@@ -151,7 +217,7 @@ void dijkstra(struct Graph* graph, int src) {
 			if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX && pCrawl->length + dist[u] < dist[v]) {
 				dist[v] = dist[u] + pCrawl->length;
 
-				decreaseKey(minHeap, v, dist[v]);
+				decreaseKey(minHeap, v, dist[v], dist[v]);
 			}
 			pCrawl = pCrawl->next;
 		}
@@ -162,7 +228,4 @@ void dijkstra(struct Graph* graph, int src) {
 	free(minHeap->pos);
 	free(minHeap->array);
 	free(minHeap);
-}
-
-void astar(struct Graph* graph, int src, int goal) {
 }

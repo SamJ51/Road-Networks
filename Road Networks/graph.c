@@ -23,6 +23,12 @@ struct Graph* createGraph(int V) {
 
 	graph->xCoord = (double*)malloc(V * sizeof(double));
 	graph->yCoord = (double*)malloc(V * sizeof(double));
+	if (graph->xCoord == NULL || graph->yCoord == NULL) {
+		fprintf(stderr, "Memory allocation for coordinates failed\n");
+		free(graph->array);
+		free(graph);
+		return NULL;
+	}
 
 	return graph;
 }

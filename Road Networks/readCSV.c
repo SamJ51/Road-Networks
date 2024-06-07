@@ -1,7 +1,6 @@
 #include "readCSV.h"
 
 void readCSVAndPopulateGraph(const char* filename, struct Graph* graph) {
-	int count = 0;
 	FILE* file = fopen(filename, "r");
 	if (!file) {
 		printf("Unable to open file.\n");
@@ -14,17 +13,23 @@ void readCSVAndPopulateGraph(const char* filename, struct Graph* graph) {
 			int startNode, endNode, edge;
 			double xCoord, yCoord, length;
 
-			sscanf_s(line, "%lf, %lf, %d, %d, %d, %lf", &xCoord, &yCoord, &startNode, &endNode, &edge, &length);
+			sscanf_s(line, "%lf,%lf,%d,%d,%d,%lf", &xCoord, &yCoord, &startNode, &endNode, &edge, &length);
 
 			// Adjust node indices for 0-based indexing
-			addEdge(graph, startNode - 1, endNode - 1, length);
+			startNode--;
+			endNode--;
 
-			graph->xCoord[startNode] = xCoord;
-			graph->yCoord[startNode] = yCoord;
-			graph->xCoord[endNode] = xCoord;
-			graph->yCoord[endNode] = yCoord;
-
-			count++;
+			if (startNode >= 0 && startNode < graph->V && endNode >= 0 && endNode < graph->V) {
+				addEdge(graph, startNode, endNode, length);
+				// Store coordinates
+				graph->xCoord[startNode] = xCoord;
+				graph->yCoord[startNode] = yCoord;
+				graph->xCoord[endNode] = xCoord;
+				graph->yCoord[endNode] = yCoord;
+			}
+			else {
+				//printf("Error: startNode or endNode out of bounds\n");
+			}
 		}
 	}
 	fclose(file);
